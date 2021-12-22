@@ -15,18 +15,19 @@ public class ClientService {
     EntityManager em;
 
     @Transactional
-    public void createClient(String name, String contacts, Date date) {
+    public Clients createClient(String name, String contacts, Date date) {
         Clients cl = new Clients();
         cl.setName(name);
         cl.setContacts(contacts);
         cl.setDate(date);
-        em.persist(cl);
+        return cl;
     }
 
     //вставка данных
     @Transactional
     public Clients insertClient(Clients cl) {
-        em.persist(cl);
+       // em.persist(cl);
+        em.merge(cl);
         em.flush();
         return cl;
     }
@@ -41,8 +42,9 @@ public class ClientService {
 
     //удаление данных
     @Transactional
-    public void deleteClient(Clients clients) {
-        Clients c = getClientById(clients.getclientID());
+    public void deleteClient(Long id) {
+    	Clients c = this.getClientById(id);
+       // Clients c = getClientById(clients.getclientID());
         em.remove(c);
         em.flush();
     }
